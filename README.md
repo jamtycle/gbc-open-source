@@ -12,6 +12,10 @@
     <td>Bruno Ramirez</td>
     <td>101380203</td>
   </tr>
+  </tr>
+  <td>Yiting Wang</td>
+    <td>101381503</td>
+    </tr>
 </table>
 
 ## Tasks 
