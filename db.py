@@ -32,28 +32,25 @@ def userRegister(_con: sqlite3.Connection, _username: str, _password: str):
     return True
 
 
-def
-
-
 def createDatabase(_con : sqlite3.Connection):
     if not _con:
         return
 
     sql = """
-    CREATE TABLE users
+    CREATE TABLE users IF NOT EXISTS
     (
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT
     );
     
-    CREATE TABLE categories
+    CREATE TABLE categories IF NOT EXISTS
     (
         category_id INTEGER PRIMARY KEY AUTOINCREMENT,
         category_name TEXT
     );
         
-    CREATE TABLE expenses
+    CREATE TABLE expenses IF NOT EXISTS
     (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -62,17 +59,22 @@ def createDatabase(_con : sqlite3.Connection):
         amount REAL,
         FOREIGN KEY (user_id) REFERENCES users(user_id),
         FOREIGN KEY (category_id) REFERENCES categories(category_id)
-    ); 
-    
-    INSERT INTO categories
-    VALUES ('food'), 
-           ('clothing'), 
-           ('entertainment'), 
-           ('rent'), 
-           ('transportation'), 
-           ('others'),
+    );
     """
     _con.cursor().execute(sql).close()
+
+    if len(_con.cursor().execute("SELECT * FROM categories").fetchall()) == 0:
+        sql = """
+        INSERT INTO categories
+        VALUES ('food'), 
+               ('clothing'), 
+               ('entertainment'), 
+               ('rent'), 
+               ('transportation'), 
+               ('others')
+        """
+        _con.cursor().execute(sql).close()
+
     print("Database tables created successfully.")
 
 
