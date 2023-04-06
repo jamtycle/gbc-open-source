@@ -32,10 +32,34 @@ def userRegister(_con: sqlite3.Connection, _username: str, _password: str):
     return True
 
 
-def
 
 
-def createDatabase(_con : sqlite3.Connection):
+
+# add record to expenses table
+def addRecord(_con: sqlite3.Connection, _user_id: int, _category_id: int, _date: str, _amount: float):
+    if not _con:
+        return
+
+    sql = "INSERT INTO users expenses (_user_id, _category_id, _date, _amount ) VALUES (?,?,?,?)"
+    cur = _con.cursor().execute(sql, (_user_id, _category_id, _date, _amount))
+    _con.commit()
+    cur.close()
+    return True
+
+# delete from expenses table
+def deleteRecord(_con: sqlite3.Connection, _expense_id: int):
+    if not _con:
+        return
+
+    sql = "DELETE FROM expenses WHERE id = ?"
+    cur = _con.cursor().execute(sql, [_expense_id])
+    _con.commit()
+    cur.close()
+    return True
+
+
+
+def createDatabase(_con: sqlite3.Connection):
     if not _con:
         return
 
@@ -78,4 +102,3 @@ def createDatabase(_con : sqlite3.Connection):
 
 def getDBConnection():
     return sqlite3.connect(DBNAME)
-
