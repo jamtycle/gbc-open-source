@@ -112,7 +112,7 @@ def getExpensesByYear(_user_id: int, _year: int) -> list:
     sql = """
         SELECT   -1, "Average" AS category_name,
                  strftime("%Y", date(datetime(substr(expenses.date, 7) || '-' || substr(expenses.date, 4, 2) || '-' || substr(expenses.date, 1, 2)))) AS year,
-                 AVG(expenses.amount) AS amount
+                 ROUND(AVG(expenses.amount), 2) AS amount
         FROM     expenses
         WHERE 	 user_id = ?
                  AND CAST(strftime("%Y", date(datetime(substr(expenses.date, 7) || '-' || substr(expenses.date, 4, 2) || '-' || substr(expenses.date, 1, 2)))) AS INTEGER) = ?
