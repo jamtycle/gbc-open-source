@@ -1,14 +1,11 @@
 from tkinter import *
-from tkinter import ttk
 
 import screeninfo
 from screeninfo import get_monitors
 
-import Views.LoginFrame
 import db
 from Views.LoginFrame import LoginFrame
 from Views.MainFrame import MainFrame
-
 
 USER = []
 WINDOW = Tk()
@@ -30,18 +27,6 @@ def showLogin(_root: Tk):
     login = LoginFrame(_root)
     login.loggedCallback = lambda u: onLoginSuccess(u)
     login.run()
-
-    # print(getPrimaryScreen())
-    # x_pos = (getPrimaryScreen().width // 2) - (Views.LoginFrame.WIDTH // 2)
-    # y_pos = (getPrimaryScreen().height // 2) - (Views.LoginFrame.HEIGHT // 2)
-    # print(x_pos)
-    # print(y_pos)
-    # # print(WINDOW.winfo_width())
-    # # print(WINDOW.winfo_height())
-    # print(Views.LoginFrame.WIDTH)
-    # print(Views.LoginFrame.HEIGHT)
-    # # WINDOW.positionfrom()
-    # WINDOW.geometry('{}x{}+{}+{}'.format(Views.LoginFrame.WIDTH, Views.LoginFrame.HEIGHT, x_pos, y_pos))
 
 
 def showMain(_root: Tk):

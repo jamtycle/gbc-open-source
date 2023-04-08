@@ -52,11 +52,11 @@ def getExpensesHeader(_type: str) -> list:
         ]
     elif _type == "raw":
         return [
-            ('id',            "ID",         30),
-            ('category_id',   "CategoryID", 0),
-            ('category_name', "Category",   150),
-            ('date',          "Date",       150),
-            ('amount',        "Amount",     150),
+            ('id', "ID", 30),
+            ('category_id', "CategoryID", 0),
+            ('category_name', "Category", 150),
+            ('date', "Date", 150),
+            ('amount', "Amount", 150),
         ]
     else:
         return [
@@ -104,6 +104,23 @@ def getExpenses(_user_id: int, _type: str) -> list:
     return _con.cursor().execute(sql, [_user_id]).fetchall()
 
 
+def getExpensesByYear(_user_id: int, _year: int) -> list:
+    _con = getDBConnection()
+    if not _con:
+        return []
+
+    sql = """
+        SELECT   -1, "Total" AS category_name,
+                 strftime("%Y", date(datetime(substr(expenses.date, 7) || '-' || substr(expenses.date, 4, 2) || '-' || substr(expenses.date, 1, 2)))) AS year,
+                 AVG(expenses.amount) AS amount
+        FROM     expenses
+        WHERE 	 user_id = ?
+                 AND CAST(strftime("%Y", date(datetime(substr(expenses.date, 7) || '-' || substr(expenses.date, 4, 2) || '-' || substr(expenses.date, 1, 2)))) AS INTEGER) = ?
+        GROUP BY 1, 2, 3
+    """
+    return _con.cursor().execute(sql, [_user_id, _year]).fetchall()[0]
+
+
 def getExpensesByCategory(_user_id: int, _category_id: int) -> list:
     _con = getDBConnection()
     if not _con:
@@ -149,7 +166,6 @@ def getCategories() -> list:
 
     sql = "SELECT category_name FROM categories"
     rows = _con.cursor().execute(sql).fetchall()
-    # rows.insert(0, tuple("-all-"))
     return rows
 
 

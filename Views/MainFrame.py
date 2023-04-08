@@ -87,12 +87,24 @@ class MainFrame:
     def loadGrid(self, _filter=None):
         # rows
         data = db.getExpenses(self.user[0], self.data_type.get())
+        if self.data_type.get() == "monthly":
+            data.append(db.getExpensesByYear(self.user[0], dt.today().year))
+
         for i, row in enumerate(data):
             if _filter:
                 if _filter(row):
                     self.tv_data.insert(parent="", index="end", text="1", values=row)
             else:
                 self.tv_data.insert(parent="", index="end", text="1", values=row)
+
+        if self.data_type.get() == "monthly":
+            self.tv_data.tag_configure("pos", background="lightgreen")
+            self.tv_data.tag_configure("neg", background="#FFB6C1")
+            for child in self.tv_data.get_children()[:-1]:
+                if float(self.tv_data.item(child)["values"][-1]) <= float(self.tv_data.item(self.tv_data.get_children()[-1])["values"][-1]):
+                    self.tv_data.item(child, tags=("pos",))
+                else:
+                    self.tv_data.item(child, tags=("neg",))
 
     def addNewExpense(self):
         window = tk.Tk()
@@ -134,6 +146,8 @@ class MainFrame:
 
             return _row[1] == _category_id and date.month == _month
         elif self.data_type.get() == "monthly":
+            if _row[2].find("-") == -1:
+                return True
             # year = _row[2][0:_row[2].index("-")]
             month = int(_row[2][_row[2].index("-") + 1:len(_row[2])])
             if self.cb_categories.get().lower() == "all" and self.cb_months.get().lower() == "all":
