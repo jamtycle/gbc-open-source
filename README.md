@@ -20,13 +20,13 @@
 
 ## Tasks 
 
-- [ ] User input validation (category, numbers, [week or month]) [Eva]
-    - [ ] Ask user to input expenses. [Eva]
-        - [ ] User could input a date in format (dd-MM-yyyy) or a week number (0-52) [Eva]
-        - [ ] User could input an amount (in CAD) [Eva]
-    - [ ] User options [Bruno]
-        - [ ] See total expenses for a month [Bruno]
-            - [ ] filter by category and month [Bruno]
-        - [ ] total moth expense for all categories [Bruno]
-        - [ ] total week expense for all categories [Bruno]
-    - [ ] Save expenses as weekly expenses. (as in a .csv) [Bruno]
+- [x] User input validation (category, numbers, [week or month]) [Eva]
+    - [x] Ask user to input expenses. [Eva]
+        - [x] User could input a date in format (dd-MM-yyyy) or a week number (0-52) [Eva]
+        - [x] User could input an amount (in CAD) [Eva]
+    - [x] User options [Bruno]
+        - [x] See total expenses for a month [Bruno]
+            - [x] filter by category and month [Bruno]
+        - [x] total moth expense for all categories [Bruno]
+        - [x] total week expense for all categories [Bruno]
+    - [x] Save expenses as weekly expenses. (as in a .csv) [Bruno]
