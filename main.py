@@ -1,15 +1,29 @@
 from tkinter import *
 from tkinter import ttk
+
+import screeninfo
+from screeninfo import get_monitors
+
+import Views.LoginFrame
 import db
 from Views.LoginFrame import LoginFrame
+from Views.MainFrame import MainFrame
+
+
+USER = []
+WINDOW = Tk()
 
 
 def main():
-    window = Tk()
-    window.resizable(False, False)
-    showLogin(window)
-    # createGrid(window, db.getExpenses())
-    window.mainloop()
+    WINDOW.resizable(False, False)
+    showLogin(WINDOW)
+    WINDOW.mainloop()
+
+
+def onLoginSuccess(_user: tuple):
+    global USER, WINDOW
+    USER = _user
+    showMain(WINDOW)
 
 
 def showLogin(_root: Tk):
@@ -17,9 +31,32 @@ def showLogin(_root: Tk):
     login.loggedCallback = lambda u: onLoginSuccess(u)
     login.run()
 
+    # print(getPrimaryScreen())
+    # x_pos = (getPrimaryScreen().width // 2) - (Views.LoginFrame.WIDTH // 2)
+    # y_pos = (getPrimaryScreen().height // 2) - (Views.LoginFrame.HEIGHT // 2)
+    # print(x_pos)
+    # print(y_pos)
+    # # print(WINDOW.winfo_width())
+    # # print(WINDOW.winfo_height())
+    # print(Views.LoginFrame.WIDTH)
+    # print(Views.LoginFrame.HEIGHT)
+    # # WINDOW.positionfrom()
+    # WINDOW.geometry('{}x{}+{}+{}'.format(Views.LoginFrame.WIDTH, Views.LoginFrame.HEIGHT, x_pos, y_pos))
 
-def onLoginSuccess(_user):
-    print(_user)
+
+def showMain(_root: Tk):
+    main = MainFrame(_root, USER)
+    main.run()
+    if not main.result:
+        return
+    if main.result == "logout":
+        showLogin(_root)
+
+
+def getPrimaryScreen() -> screeninfo.Monitor:
+    for m in get_monitors():
+        if m.is_primary:
+            return m
 
 
 def createGrid(_root: Tk, _data: list):

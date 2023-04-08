@@ -32,6 +32,12 @@ def validate_week(week_num):
 
 # amount input validation
 def validate_amount(amount):
+    if isinstance(amount, str):
+        try:
+            float(amount)
+            return True
+        except ValueError:
+            return False
     if not isinstance(amount, (int, float)):
         print("Invalid amount. Please enter a number")
         return False

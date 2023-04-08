@@ -1,16 +1,19 @@
-#!/usr/bin/python3
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
 import db
 
+HEIGHT = 200
+WIDTH = 300
+
 
 class LoginFrame:
     def __init__(self, master: tk.Tk):
+        master.wm_title("Login")
         self.loggedCallback = None
         # build ui
         frame1 = ttk.Frame(master)
-        frame1.configure(height=200, padding=20, width=300)
+        frame1.configure(height=HEIGHT, padding=20, width=WIDTH)
         label1 = ttk.Label(frame1)
         label1.configure(text="username")
         label1.grid(column=0, columnspan=2, row=0)
@@ -27,14 +30,12 @@ class LoginFrame:
         entry2.grid(column=0, columnspan=2, pady=0, row=3)
         self.btn_register = ttk.Button(frame1)
         self.btn_register.configure(text="Register")
-        self.btn_register.grid(column=0, pady=10, row=4)
-        _wcmd = lambda wid="btn_register": self.registerAction()
-        self.btn_register.configure(command=_wcmd)
+        self.btn_register.grid(column=0, pady=10, padx=5, row=4)
+        self.btn_register.configure(command=lambda wid="btn_register": self.registerAction())
         self.btn_login = ttk.Button(frame1)
         self.btn_login.configure(text="Log in")
-        self.btn_login.grid(column=1, pady=10, row=4)
-        _wcmd = lambda wid="btn_login": self.loginAction()
-        self.btn_login.configure(command=_wcmd)
+        self.btn_login.grid(column=1, pady=10, padx=5, row=4)
+        self.btn_login.configure(command=lambda wid="btn_login": self.loginAction())
         frame1.pack(side="top")
 
         # Main widget
@@ -42,6 +43,10 @@ class LoginFrame:
 
     def run(self):
         self.mainwindow.mainloop()
+
+    def stop(self):
+        self.mainwindow.quit()
+        self.mainwindow.destroy()
 
     def validateInput(self) -> bool:
         if len(self.username.get()) == 0:
@@ -78,6 +83,7 @@ class LoginFrame:
             messagebox.showwarning("Log in", "Wrong username or password.")
             return
 
+        self.stop()
         if self.loggedCallback:
-            self.loggedCallback(log)
-        messagebox.showinfo("Log in", "Log in successfully.")
+            self.loggedCallback(log[0])
+        # messagebox.showinfo("Log in", "Log in successfully.")
